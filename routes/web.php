@@ -1,10 +1,40 @@
 <?php
 
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\TaskController;
 
-Route::get('/', [TaskController::class, 'index'])->name('tasks.index');
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider and all of them will
+| be assigned to the "web" middleware group. Make something great!
+|
+*/
 
-Route::resource('tasks', TaskController::class)->except(['show']);
+Route::get('/', function () {
+    return view('welcome');
+});
 
-Route::patch('tasks/{task}/done', [TaskController::class, 'done'])->name('tasks.done');
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/rahasia', function () {
+    return view('ini halaman rahasia');
+})->middleware(middleware:'auth');
+    Route::get('/rahasia', function (){
+    return 'ini halaman rahasia';
+})->middleware('auth', 'RoleCheck:admin');
+
+Route::get('/produk',[ProductController::class, 'index']);
+
+});
+
+require __DIR__.'/auth.php';
