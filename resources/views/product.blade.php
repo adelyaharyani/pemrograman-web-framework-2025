@@ -1,11 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ini halaman produk</title>
-</head>
-<body>
-    <h1>Ini halaman produk</h1>
-</body>
-</html>
+@extends('layouts.utama')
+
+@section('title', 'Daftar Produk')
+
+@section('content')
+    <h1>Manajemen Produk</h1>
+    <p>Ini adalah halaman untuk menampilkan daftar produk di sistem toko.</p>
+@endsection

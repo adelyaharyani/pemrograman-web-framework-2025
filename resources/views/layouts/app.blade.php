@@ -1,36 +1,30 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="csrf-token" content="{{ csrf_token() }}">
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- CSRF token untuk keperluan AJAX/JS -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>@yield('title', 'Sistem Toko - Auth')</title>
 
-        <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+    <!-- Jika kamu memakai asset publik -->
+    <link rel="stylesheet" href="{{ asset('css/toko.css') }}">
 
-        <!-- Scripts -->
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
-    </head>
-    <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-100">
-            @include('layouts.navigation')
+    <!-- Atau kalau pakai Vite, uncomment baris ini dan hapus atau sesuaikan asset() -->
+    {{-- @vite('resources/css/app.css') --}}
 
-            <!-- Page Heading -->
-            @if (isset($header))
-                <header class="bg-white shadow">
-                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                        {{ $header }}
-                    </div>
-                </header>
-            @endif
-
-            <!-- Page Content -->
-            <main>
-                {{ $slot }}
-            </main>
+    <!-- Tempat untuk style tambahan per-halaman -->
+    @stack('styles')
+</head>
+<body>
+    <main role="main" class="auth-container">
+        <div class="auth-box">
+            @yield('content')
         </div>
-    </body>
+    </main>
+
+    <!-- Tempat untuk script tambahan per-halaman -->
+    @stack('scripts')
+</body>
 </html>

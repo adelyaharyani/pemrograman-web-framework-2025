@@ -5,7 +5,7 @@ use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('login');
 });
 
 Route::get('/dashboard', function () {
@@ -13,16 +13,19 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
+    // Profil user
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
+    // Halaman khusus admin
     Route::get('/rahasia-admin', function () {
-        return 'ini halaman rahasia khusus admin';
-    })->middleware(['auth', 'RoleCheck:admin']);
+        return 'Ini halaman rahasia khusus admin';
+    })->middleware(['RoleCheck:admin']);
 
-    Route::get('/produk',[ProductController::class, 'index']);
-    Route::get('/route_cont/{id}', [ProductController::class, 'show']);
+    // Produk
+    Route::get('/products', [ProductController::class, 'index'])->name('products.index');
+    Route::get('/products/{id}', [ProductController::class, 'show'])->name('products.show');
 });
 
 require __DIR__.'/auth.php';
