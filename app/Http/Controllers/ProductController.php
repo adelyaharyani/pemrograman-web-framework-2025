@@ -3,61 +3,47 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Product; 
 
 class ProductController extends Controller
 {
-    /**
-     * Menampilkan daftar produk.
-     */
     public function index()
     {
-        // view untuk daftar produk
-        return view('product'); 
+        return view('products');
     }
 
-    /**
-     * Menampilkan form tambah produk baru.
-     */
     public function create()
     {
-        return view('products-create');
+        return view('master-data.product-master.product-create');
     }
 
-    /**
-     * Simpan produk baru ke database.
-     */
     public function store(Request $request)
     {
-        // validasi data
-        $request->validate([
-            'nama' => 'required|string|max:255',
-            'harga' => 'required|numeric',
+        $validatedData = $request->validate([
+            'product_name' => 'required|string|max:255',
+            'unit' => 'required|string|max:100',
+            'type' => 'required|string|max:100',
+            'information' => 'nullable|string',
+            'qty' => 'required|integer|min:0',
+            'producer' => 'required|string|max:255',
         ]);
 
-        // sementara hanya return, nanti bisa disimpan ke database
-        return back()->with('success', 'Produk berhasil ditambahkan!');
+       
+        Product::create($validatedData);
+
+        return redirect()->route('product-create')->with('success', 'Product created successfully.');
     }
 
-    /**
-     * Menampilkan detail produk berdasarkan ID.
-     */
     public function show($id)
     {
-        // view detail produk
         return view('products-show', ['id' => $id]);
     }
 
-    /**
-     * Menampilkan form edit produk.
-     */
     public function edit(string $id)
     {
         return view('products-edit', ['id' => $id]);
     }
 
-    /**
-     * Update produk berdasarkan ID.
-     */
     public function update(Request $request, string $id)
     {
         $request->validate([
@@ -68,9 +54,6 @@ class ProductController extends Controller
         return back()->with('success', "Produk dengan ID $id berhasil diupdate!");
     }
 
-    /**
-     * Hapus produk berdasarkan ID.
-     */
     public function destroy(string $id)
     {
         return back()->with('success', "Produk dengan ID $id berhasil dihapus!");

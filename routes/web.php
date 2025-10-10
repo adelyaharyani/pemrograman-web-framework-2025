@@ -26,6 +26,11 @@ Route::middleware('auth')->group(function () {
     // Produk
     Route::get('/products', [ProductController::class, 'index'])->name('products.index');
     Route::get('/products/{id}', [ProductController::class, 'show'])->name('products.show');
+
+    //praktikum form
+    Route::get('/product/create', [ProductController::class, 'create'])->name('product-create');
+    Route::post('/products', [ProductController::class, 'store'])->name('product-store');
+
 });
 
 require __DIR__.'/auth.php';
