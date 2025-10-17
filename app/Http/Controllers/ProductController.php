@@ -3,13 +3,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Product; 
+use App\Models\Product;
 
 class ProductController extends Controller
 {
     public function index()
     {
-        return view('products');
+        $data = Product::all();
+        return view('master-data.product-master.index-product', compact('data'));
     }
 
     public function create()
@@ -28,7 +29,7 @@ class ProductController extends Controller
             'producer' => 'required|string|max:255',
         ]);
 
-       
+
         Product::create($validatedData);
 
         return redirect()->route('product-create')->with('success', 'Product created successfully.');
@@ -41,21 +42,40 @@ class ProductController extends Controller
 
     public function edit(string $id)
     {
-        return view('products-edit', ['id' => $id]);
+        $product = Product::findOrFail($id);
+        return view('master-data.product-master.edit-product', compact('product'));
     }
 
     public function update(Request $request, string $id)
     {
         $request->validate([
-            'nama' => 'required|string|max:255',
-            'harga' => 'required|numeric',
+            'product_name' => 'required|string|max:255',
+            'unit' => 'required|string|max:255',
+            'type' => 'required|string|max:255',
+            'information' => 'nullable|string',
+            'qty' => 'required|integer|min:1',
+            'producer' => 'required|string|max:255',
         ]);
 
-        return back()->with('success', "Produk dengan ID $id berhasil diupdate!");
+        $product = Product::findOrFail($id);
+        $product->update([
+            'product_name' => $request->product_name,
+            'unit' => $request->unit,
+            'type' => $request->type,
+            'information' => $request->information,
+            'qty' => $request->qty,
+            'producer' => $request->producer,
+        ]);
+
+        return redirect()->back()->with('success', 'Product update successfully!');
     }
 
-    public function destroy(string $id)
+
+   public function destroy( string $id)
     {
-        return back()->with('success', "Produk dengan ID $id berhasil dihapus!");
+        $data = Product::findOrFail($id);
+        $data->delete();
+
+        return redirect()->back()->with('success', 'Data berhasil dihapus');
     }
 }
