@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
-
+use Illuminate\Support\Facades\DB;
 class ProductController extends Controller
 {
     public function index()
@@ -71,11 +71,12 @@ class ProductController extends Controller
     }
 
 
-   public function destroy( string $id)
+    public function destroy(string $id)
     {
-        $data = Product::findOrFail($id);
-        $data->delete();
+        // Hapus data produk berdasarkan id pakai Query Builder
+        DB::table('products')->where('id', $id)->delete();
 
-        return redirect()->back()->with('success', 'Data berhasil dihapus');
+        // Kembali ke halaman sebelumnya dengan pesan sukses
+        return redirect()->back()->with('success', 'Data berhasil dihapus!');
     }
 }
