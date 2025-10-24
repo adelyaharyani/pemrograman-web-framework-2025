@@ -79,4 +79,4 @@ class ProductController extends Controller
         // Kembali ke halaman sebelumnya dengan pesan sukses
         return redirect()->back()->with('success', 'Data berhasil dihapus!');
     }
-}
+} 
