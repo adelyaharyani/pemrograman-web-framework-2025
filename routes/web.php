@@ -35,6 +35,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/product/{id}/edit', [ProductController::class, 'edit'])->name('product-edit');
     Route::put('/product/{id}', [ProductController::class, 'update'])->name('product-update');
     Route::delete('/product/{id}', [ProductController::class, 'destroy'])->name('product-destroy');
+    // untuk download data keseluruhan
+    Route::get('/product/export/excel', [ProductController::class, 'exportExcel'])
+        ->name('product-export-excel');
+
 });
 
 require __DIR__ . '/auth.php';

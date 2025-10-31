@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\ProductsExport;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 class ProductController extends Controller
 {
     public function index()
@@ -79,4 +82,10 @@ class ProductController extends Controller
         // Kembali ke halaman sebelumnya dengan pesan sukses
         return redirect()->back()->with('success', 'Data berhasil dihapus!');
     }
-} 
+
+    public function exportExcel(): BinaryFileResponse
+    {
+        return Excel::download(new ProductsExport, 'product.xlsx');
+    }
+
+}
